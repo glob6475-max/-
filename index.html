@@ -1,0 +1,535 @@
+﻿<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ZORIBLOO — Вселенная приключений</title>
+<style>
+@import url("https://fonts.googleapis.com/css2?family=Geologica:wght@300;400;500;600;700;800;900&display=swap");
+*{margin:0;padding:0;box-sizing:border-box}
+:root{--rainbow:240deg}
+html{scroll-behavior:smooth}
+body{
+ color:#f8f5ff;
+ background:#100b20;
+ font-family:"Geologica",sans-serif;
+ overflow-x:hidden;
+ transition:background-color .5s;
+}
+a{color:inherit;text-decoration:none}
+#progress{
+ position:fixed;top:0;left:0;width:0;height:4px;
+ z-index:1000;
+ background:linear-gradient(90deg,red,orange,yellow,lime,cyan,blue,violet);
+}
+#stars{position:fixed;inset:0;pointer-events:none;z-index:0}
+.star{
+ position:absolute;width:2px;height:2px;border-radius:50%;
+ background:white;opacity:.6;
+ animation:twinkle 3s infinite alternate;
+}
+@keyframes twinkle{to{opacity:.1;transform:scale(.4)}}
+
+header{
+ height:85px;padding:0 8%;display:flex;align-items:center;
+ justify-content:space-between;position:absolute;width:100%;
+ z-index:20;border-bottom:1px solid #ffffff18;
+}
+.logo{font-size:25px;letter-spacing:3px;font-weight:900}
+.logo span{background:linear-gradient(90deg,#ff7777,#ffe36d,#78efaa,#75caff,#c28bff);
+ -webkit-background-clip:text;color:transparent}
+nav{display:flex;gap:30px;align-items:center}
+nav a{font-size:14px;color:#c4bfd6;transition:.3s}
+nav a:hover{color:white}
+.nav-button{border:1px solid #ffffff55;padding:12px 22px;border-radius:40px}
+
+.hero{
+ min-height:100vh;display:flex;align-items:center;
+ padding:130px 9% 80px;position:relative;overflow:hidden;
+}
+.hero-content{position:relative;z-index:5;max-width:650px}
+.eyebrow{letter-spacing:5px;font-size:11px;color:#b7a5ff;font-weight:bold}
+h1{font-size:clamp(65px,10vw,135px);line-height:.88;
+ letter-spacing:-7px;margin:30px 0;font-weight:900}
+.rainbow-text{
+ background:linear-gradient(90deg,#ff7272,#ffbd62,#fff078,#76e9a0,#75d9ff,#a18bff,#f18bff);
+ background-size:300% 100%;
+ -webkit-background-clip:text;color:transparent;
+ animation:rainbow 8s linear infinite;
+}
+@keyframes rainbow{to{background-position:300% 0}}
+.hero-description{color:#b5b1ca;max-width:440px;font-size:17px;line-height:1.8;margin-bottom:35px}
+.main-button{
+ display:inline-flex;gap:15px;align-items:center;
+ background:linear-gradient(100deg,#fff,#d8d8ff);
+ color:#17142a;padding:17px 27px;border-radius:50px;
+ font-weight:bold;transition:.3s;
+}
+.main-button:hover{transform:translateY(-5px);box-shadow:0 10px 40px #b6aaff55}
+.hero-note{color:#85809e;margin-top:22px;font-size:12px;letter-spacing:2px}
+
+.space-object{
+ position:absolute;width:520px;height:520px;right:4%;top:50%;
+ transform:translateY(-50%);display:grid;place-items:center;z-index:2;
+}
+.glow{position:absolute;inset:0;border-radius:50%;
+ background:radial-gradient(circle,#a080ff55,transparent 68%);filter:blur(25px)}
+.planet{
+ width:340px;height:340px;border-radius:50%;position:relative;
+ background:
+ radial-gradient(ellipse at 25% 20%,#fff0ff 0%,transparent 17%),
+ radial-gradient(ellipse at 70% 75%,#34245f,transparent 40%),
+ linear-gradient(135deg,#a3b5ff,#8964d6 55%,#25285d);
+ box-shadow:inset -40px -35px 80px #080d35aa,
+ inset 15px 15px 40px #ffffff30,0 0 100px #9a80ff66;
+ will-change:transform,filter;
+}
+.planet:before{
+ content:"";position:absolute;inset:-5px;border-radius:50%;
+ background:repeating-linear-gradient(155deg,transparent 0 12px,#ffffff18 20px,transparent 35px);
+ opacity:.7;
+}
+.orbit{
+ position:absolute;width:490px;height:150px;border:2px solid #c1b5ff88;
+ border-radius:50%;transform:rotate(-25deg);
+}
+.moon{
+ position:fixed;right:8%;top:20%;
+ width:76px;height:76px;border-radius:50%;z-index:15;
+ background:radial-gradient(circle at 30% 25%,#fff,#d4d7ed 55%,#7885aa);
+ box-shadow:0 0 35px #d7d9ff99,inset -12px -10px 20px #535c80;
+ pointer-events:none;will-change:top,transform;
+}
+.moon:after{
+ content:"";position:absolute;width:13px;height:13px;
+ border-radius:50%;background:#a5abc0;top:20px;left:42px;
+ box-shadow:-23px 22px 0 -3px #a5abc0,12px 35px 0 -5px #a5abc0;
+}
+.scroll-hint{
+ position:absolute;bottom:30px;left:50%;transform:translateX(-50%);
+ color:#9b93b9;font-size:11px;letter-spacing:4px;
+ animation:hint 2s infinite;
+}
+@keyframes hint{50%{transform:translate(-50%,9px);opacity:.5}}
+
+.section{
+ min-height:85vh;padding:130px 10%;position:relative;z-index:2;
+ display:flex;flex-direction:column;justify-content:center;
+}
+.section-label{color:#c2aaff;letter-spacing:5px;font-size:11px;margin-bottom:25px}
+h2{font-size:clamp(42px,7vw,85px);letter-spacing:-4px;line-height:1;margin-bottom:30px}
+.section-text{max-width:650px;color:#b8b2ce;font-size:18px;line-height:1.9}
+.about{background:linear-gradient(180deg,transparent,#38215a33,transparent)}
+.big-number{
+ position:absolute;right:8%;bottom:0;font-size:clamp(100px,20vw,240px);
+ font-weight:900;color:#ffffff09;pointer-events:none;
+}
+.features{background:linear-gradient(180deg,transparent,#1d385033,transparent)}
+.feature-list{margin-top:45px;max-width:950px}
+.feature{
+ border-top:1px solid #ffffff30;padding:30px 0;
+ display:flex;justify-content:space-between;align-items:center;
+ gap:20px;transition:.4s;
+}
+.feature:last-child{border-bottom:1px solid #ffffff30}
+.feature:hover{padding-left:20px;border-color:#d0aaff}
+.feature-title{font-size:clamp(22px,4vw,38px)}
+.feature-desc{color:#aaa4c3;font-size:13px;margin-top:8px}
+.feature-icon{font-size:32px}
+.gallery{
+ display:grid;grid-template-columns:repeat(3,1fr);gap:18px;
+ margin-top:40px;
+}
+.gallery-item{
+ min-height:230px;border-radius:22px;padding:25px;
+ display:flex;flex-direction:column;justify-content:flex-end;
+ background:linear-gradient(145deg,#45417e,#222444);
+ transition:transform .4s,filter .4s;
+}
+.gallery-item:nth-child(2){background:linear-gradient(145deg,#754879,#302446)}
+.gallery-item:nth-child(3){background:linear-gradient(145deg,#397a88,#222e4a)}
+.gallery-item:hover{transform:translateY(-10px) scale(1.02);filter:brightness(1.2)}
+.gallery-emoji{font-size:55px;margin-bottom:auto}
+.gallery-item strong{font-size:21px}
+.gallery-item small{color:#d0cce2;margin-top:7px}
+.join{
+ text-align:center;align-items:center;
+ background:radial-gradient(ellipse at center,#713e9c55,transparent 65%);
+}
+.join .section-text{margin-bottom:35px}
+footer{
+ border-top:1px solid #ffffff20;padding:35px 8%;
+ display:flex;justify-content:space-between;gap:20px;
+ color:#918ba9;font-size:13px;position:relative;z-index:2;
+}
+.reveal{opacity:0;transform:translateY(40px);
+ transition:opacity .9s ease,transform .9s ease}
+.reveal.visible{opacity:1;transform:translateY(0)}
+
+@media(max-width:850px){
+ header{padding:0 6%;height:75px}
+ nav{gap:12px}
+ nav a:not(.nav-button){display:none}
+ .hero{padding:120px 7% 60px;min-height:900px;align-items:flex-start}
+ .hero-content{margin-top:30px}
+ h1{letter-spacing:-4px;font-size:clamp(60px,14vw,95px)}
+ .space-object{width:340px;height:340px;top:auto;bottom:50px;right:50%;transform:translateX(50%)}
+ .planet{width:225px;height:225px}
+ .orbit{width:320px;height:105px}
+ .moon{width:55px;height:55px;right:5%}
+ .section{padding:100px 7%;min-height:75vh}
+ .gallery{grid-template-columns:1fr}
+ .gallery-item{min-height:180px}
+ footer{flex-wrap:wrap}
+}
+@media(prefers-reduced-motion:reduce){
+ *,*:before,*:after{animation-duration:.01ms!important;transition-duration:.01ms!important}
+}
+.support-message {
+  position: relative;
+  z-index: 2;
+  text-align: center;
+  padding: 130px 8%;
+  background: radial-gradient(ellipse at center, #a17aff30, transparent 70%);
+}
+.support-small {
+  color: #c4aaff;
+  font-size: 12px;
+  letter-spacing: 5px;
+  margin-bottom: 25px;
+}
+.support-message h2 {
+  font-size: clamp(48px, 9vw, 105px);
+  line-height: 1.05;
+  background: linear-gradient(90deg,#ff8585,#ffe27c,#83e6ac,#85caff,#c18aff);
+  background-size: 250% 100%;
+  color: transparent;
+  -webkit-background-clip: text;
+  animation: rainbow 8s linear infinite;
+}
+.support-message p {
+  max-width: 750px;
+  margin: 25px auto 35px;
+  color: #d0c9e2;
+  font-size: clamp(21px, 3vw, 30px);
+  line-height: 1.6;
+}
+.support-message a {
+  display: inline-block;
+  padding: 16px 28px;
+  border: 1px solid #ffffff55;
+  border-radius: 40px;
+  transition: .3s;
+}
+.support-message a:hover {
+  background: white;
+  color: #17142a;
+  transform: translateY(-4px);
+}
+
+/* MOBILE EXPERIENCE — ZORIBLOO */
+* {
+  -webkit-tap-highlight-color: transparent;
+}
+img, video {
+  max-width: 100%;
+}
+body {
+  min-width: 320px;
+}
+button, a {
+  touch-action: manipulation;
+}
+@media(max-width:600px) {
+  header {
+    height: 68px;
+    padding: 0 5%;
+  }
+  .logo {
+    font-size: 20px;
+    letter-spacing: 2px;
+  }
+  .nav-button {
+    padding: 10px 14px;
+    font-size: 12px;
+  }
+  .hero {
+    min-height: 850px;
+    padding: 105px 6% 40px;
+  }
+  .hero-content {
+    margin-top: 10px;
+    width: 100%;
+  }
+  .eyebrow {
+    font-size: 9px;
+    letter-spacing: 3px;
+    line-height: 1.7;
+  }
+  h1 {
+    font-size: clamp(57px, 15vw, 85px);
+    letter-spacing: -3px;
+    margin: 24px 0;
+  }
+  .hero-description {
+    font-size: 15px;
+    line-height: 1.7;
+  }
+  .main-button {
+    padding: 15px 19px;
+    font-size: 13px;
+  }
+  .space-object {
+    width: 290px;
+    height: 290px;
+    bottom: 65px;
+  }
+  .planet {
+    width: 190px;
+    height: 190px;
+  }
+  .orbit {
+    width: 275px;
+    height: 90px;
+  }
+  .moon {
+    width: 46px;
+    height: 46px;
+    right: 5%;
+  }
+  .section {
+    min-height: auto;
+    padding: 100px 7%;
+  }
+  h2 {
+    font-size: clamp(37px, 10vw, 57px);
+    letter-spacing: -2px;
+    line-height: 1.08;
+  }
+  .section-text {
+    font-size: 15px;
+    line-height: 1.8;
+  }
+  .feature {
+    padding: 24px 0;
+  }
+  .feature-title {
+    font-size: 20px;
+  }
+  .feature-desc {
+    font-size: 12px;
+    line-height: 1.6;
+  }
+  .gallery {
+    grid-template-columns: 1fr;
+    gap: 14px;
+  }
+  .gallery-item {
+    min-height: 175px;
+    padding: 22px;
+  }
+  .support-message {
+    padding: 95px 7%;
+  }
+  .support-message h2 {
+    font-size: clamp(40px, 11vw, 65px);
+    letter-spacing: -2px;
+  }
+  .support-message p {
+    font-size: 17px;
+  }
+  footer {
+    padding: 28px 7%;
+    flex-direction: column;
+    align-items: flex-start;
+    font-size: 12px;
+  }
+  .scroll-hint {
+    font-size: 9px;
+  }
+}
+</style>
+</head>
+<body>
+<div id="progress"></div>
+<div id="stars"></div>
+
+<header>
+ <a class="logo" href="#">ZORI<span>BLOO</span></a>
+ <nav>
+  <a href="#about">О проекте</a>
+  <a href="#features">Особенности</a>
+  <a href="#stories">Истории</a>
+  <a class="nav-button" href="https://www.youtube.com/@Zoribloo-52" target="_blank">YouTube ↗</a>
+ </nav>
+</header>
+
+<div class="moon" id="moon"></div>
+
+<main>
+<section class="hero">
+ <div class="hero-content">
+  <div class="eyebrow">ДОБРО ПОЖАЛОВАТЬ ВО ВСЕЛЕННУЮ</div>
+  <h1>МИР<br><span class="rainbow-text">ZORI</span><br>BLOO.</h1>
+  <p class="hero-description">Место, где живут необычные герои, случаются смешные истории и каждый день начинается новое приключение.</p>
+  <a class="main-button" href="https://www.youtube.com/@Zoribloo-52" target="_blank">Открыть наш YouTube ↗</a>
+  <div class="hero-note">ФАНТАЗИЯ · ЮМОР · ПРИКЛЮЧЕНИЯ</div>
+ </div>
+ <div class="space-object" id="spaceObject">
+  <div class="glow"></div>
+  <div class="orbit"></div>
+  <div class="planet" id="planet"></div>
+ </div>
+ <div class="scroll-hint">ЛИСТАЙ ВНИЗ ↓</div>
+</section>
+
+<section class="section about" id="about">
+ <div class="section-label reveal">01 / О НАШЕМ МИРЕ</div>
+ <h2 class="reveal">Здесь начинается<br>что-то необычное.</h2>
+ <p class="section-text reveal">Zoribloo — это маленькая вселенная больших эмоций. Милые персонажи, неожиданные повороты и короткие истории, которые хочется пересматривать. Каждое приключение немного безумное, но именно поэтому интересное.</p>
+ <div class="big-number">01</div>
+</section>
+
+<section class="section features" id="features">
+ <div class="section-label reveal">02 / ЧТО ТЕБЯ ЖДЁТ</div>
+ <h2 class="reveal">Целая вселенная<br>в одном канале.</h2>
+ <div class="feature-list">
+  <div class="feature reveal"><div><div class="feature-title">Неожиданные сюжеты</div><div class="feature-desc">Каждая история может удивить</div></div><span class="feature-icon">✨</span></div>
+  <div class="feature reveal"><div><div class="feature-title">Милые персонажи</div><div class="feature-desc">Маленькие герои с большим характером</div></div><span class="feature-icon">🐉</span></div>
+  <div class="feature reveal"><div><div class="feature-title">Смешные моменты</div><div class="feature-desc">Немного юмора в каждом приключении</div></div><span class="feature-icon">😂</span></div>
+  <div class="feature reveal"><div><div class="feature-title">Новые открытия</div><div class="feature-desc">Впереди ещё много историй</div></div><span class="feature-icon">🚀</span></div>
+ </div>
+ <div class="big-number">02</div>
+</section>
+
+<section class="section" id="stories">
+ <div class="section-label reveal">03 / ИСТОРИИ ZORIBLOO</div>
+ <h2 class="reveal">Загляни<br>в наши приключения.</h2>
+ <div class="gallery">
+  <a class="gallery-item reveal" href="https://www.youtube.com/@Zoribloo-52" target="_blank"><span class="gallery-emoji">🥚</span><strong>Таинственное яйцо</strong><small>Динозавры и неожиданные открытия ↗</small></a>
+  <a class="gallery-item reveal" href="https://www.youtube.com/@Zoribloo-52" target="_blank"><span class="gallery-emoji">🐲</span><strong>Маленькие герои</strong><small>Забавные персонажи и приключения ↗</small></a>
+  <a class="gallery-item reveal" href="https://www.youtube.com/@Zoribloo-52" target="_blank"><span class="gallery-emoji">🌈</span><strong>Новые миры</strong><small>Истории, которые ещё впереди ↗</small></a>
+ </div>
+ <div class="big-number">03</div>
+</section>
+
+<section class="section join" id="join">
+ <div class="section-label reveal">04 / ПРИСОЕДИНЯЙСЯ</div>
+ <h2 class="reveal">Твоё приключение<br>начинается здесь.</h2>
+ <p class="section-text reveal">Заглядывай на канал, смотри новые истории и становись частью нашей маленькой вселенной!</p>
+ <a class="main-button reveal" href="https://www.youtube.com/@Zoribloo-52" target="_blank">ПОДПИСАТЬСЯ НА YOUTUBE ↗</a>
+</section>
+</main>
+
+<section class="support-message">
+  <div class="support-small">ВАША ПОДДЕРЖКА ОЧЕНЬ ВАЖНА</div>
+  <h2>Я только начинаю.</h2>
+  <p>Мне будет очень приятно, если вы поможете мне. Ваша поддержка очень много для меня значит! 🙏🙏</p>
+  <a href="https://www.youtube.com/@Zoribloo-52" target="_blank">Поддержать канал ↗</a>
+</section>
+<footer>
+ <span class="logo">ZORI<span>BLOO</span></span>
+ <span>© 2026 Zoribloo · Сделано с фантазией</span>
+ <a href="#home">Наверх ↑</a>
+</footer>
+
+<script>
+const stars = document.getElementById("stars");
+for(let i=0;i<160;i++){
+ const s=document.createElement("i");
+ s.className="star";
+ s.style.left=Math.random()*100+"%";
+ s.style.top=Math.random()*100+"%";
+ s.style.animationDelay=Math.random()*4+"s";
+ stars.appendChild(s);
+}
+
+const planet=document.getElementById("planet");
+const moon=document.getElementById("moon");
+const progress=document.getElementById("progress");
+const object=document.getElementById("spaceObject");
+const orbit=document.querySelector(".orbit");
+const glow=document.querySelector(".glow");
+
+const starElements=[...document.querySelectorAll(".star")];
+
+let target=0;
+let current=0;
+let frame=false;
+
+function measure(){
+ const max=document.documentElement.scrollHeight-innerHeight;
+ target=max>0?scrollY/max:0;
+ progress.style.width=(target*100)+"%";
+ if(!frame){
+  frame=true;
+  requestAnimationFrame(animate);
+ }
+}
+
+function animate(){
+ current+=(target-current)*.055;
+
+ const p=current;
+ const angle=p*720;
+
+ // ДВИЖЕНИЕ ВСЕЙ ПЛАНЕТАРНОЙ СИСТЕМЫ
+ object.style.transform=
+  `translate(${Math.sin(p*Math.PI*2)*65}px,calc(-50% + ${p*260}px)) rotate(${p*35}deg)`;
+
+ // ПЛАНЕТА
+ planet.style.transform=
+  `rotate(${angle}deg) scale(${1+Math.sin(p*Math.PI)*.16})`;
+ planet.style.filter=`hue-rotate(${p*360}deg)`;
+ planet.style.borderRadius=
+  `${50+Math.sin(p*15)*7}% ${50-Math.sin(p*15)*7}% 48% 52%`;
+
+ // КОЛЬЦО
+ orbit.style.transform=
+  `rotate(${-25+angle*1.4}deg) scale(${1+Math.sin(p*8)*.08})`;
+
+ // СВЕЧЕНИЕ
+ glow.style.transform=`scale(${1+Math.sin(p*12)*.16}) rotate(${angle}deg)`;
+ glow.style.filter=`hue-rotate(${p*360}deg)`;
+
+ // ЛУНА
+ moon.style.top=`${15+p*70}%`;
+ moon.style.right=`${8+Math.sin(p*8)*5}%`;
+ moon.style.transform=`rotate(${angle*1.5}deg) scale(${1+Math.sin(p*10)*.12})`;
+
+ // РАДУЖНЫЙ ФОН
+ const hue=(245+p*360)%360;
+ document.body.style.backgroundColor=`hsl(${hue},48%,10%)`;
+
+ // ЗВЁЗДЫ: ПАРАЛЛАКС
+ starElements.forEach((star,i)=>{
+  const speed=.3+(i%5)*.2;
+  const y=(p*innerHeight*speed)%innerHeight;
+  const x=Math.sin(p*8+i)*18;
+  star.style.transform=`translate(${x}px,${-y}px)`;
+ });
+
+ if(Math.abs(target-current)>.0002){
+  requestAnimationFrame(animate);
+ }else{
+  frame=false;
+ }
+}
+
+window.addEventListener("scroll",measure,{passive:true});
+window.addEventListener("resize",measure);
+measure();
+
+const observer=new IntersectionObserver(entries=>{
+ entries.forEach(entry=>{
+  if(entry.isIntersecting)entry.target.classList.add("visible");
+ });
+},{threshold:.12});
+
+document.querySelectorAll(".reveal").forEach(el=>observer.observe(el));
+</script>
+</body>
+</html>
+
+
+
